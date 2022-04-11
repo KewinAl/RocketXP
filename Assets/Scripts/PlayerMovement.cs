@@ -27,8 +27,11 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = move.ReadValue<Vector2>();
     }
     void FixedUpdate(){
+
+        rb.freezeRotation = true;
         rb.AddRelativeForce(0,moveDirection.y * moveSpeed,0);
         //rb.AddRelativeTorque(0,0,-moveDirection.x * turnSpeed);
         transform.Rotate(0,0,-moveDirection.x*turnSpeed,Space.Self);
+        rb.freezeRotation = false;
     }
 }
