@@ -9,10 +9,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] PlayerInputActions playerControls;
     Vector2 moveDirection = Vector2.zero;
     InputAction move;
+    AudioSource audioSource;
 
 
     void Awake(){
         playerControls = new PlayerInputActions();
+        audioSource = GetComponent<AudioSource>();
     }
     
     void OnEnable(){
@@ -25,13 +27,29 @@ public class PlayerMovement : MonoBehaviour
 
     void Update(){
         moveDirection = move.ReadValue<Vector2>();
+        ProcessSound();
     }
-    void FixedUpdate(){
+    void ProcessSound(){
+        if(move.IsPressed()){
+            if(!audioSource.isPlaying){
+                audioSource.Play();
+            }
+        }else{
+            audioSource.Stop();
+        }
+    }
+    void FixedUpdate()
+    {
+        Moving();
+    }
+
+    private void Moving()
+    {
 
         rb.freezeRotation = true;
-        rb.AddRelativeForce(0,moveDirection.y * moveSpeed,0);
+        rb.AddRelativeForce(0, moveDirection.y * moveSpeed, 0);
         //rb.AddRelativeTorque(0,0,-moveDirection.x * turnSpeed);
-        transform.Rotate(0,0,-moveDirection.x*turnSpeed,Space.Self);
+        transform.Rotate(0, 0, -moveDirection.x * turnSpeed, Space.Self);
         rb.freezeRotation = false;
     }
 }
