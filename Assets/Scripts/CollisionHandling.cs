@@ -5,10 +5,14 @@ using UnityEngine.SceneManagement;
 public class CollisionHandling : MonoBehaviour
 {
     Rigidbody rb;
+    [SerializeField] AudioClip crash;
+    [SerializeField] AudioClip success;
+    AudioSource audioSource;
 
     void Awake(){
         
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
     
 
@@ -33,10 +37,12 @@ public class CollisionHandling : MonoBehaviour
 
     void StartCrashSequence(){
         GetComponent<PlayerMovement>().enabled = false;
+        audioSource.PlayOneShot(crash);
         Invoke("ReloadLevel",1f);
     }
     void StartNextLevelSequence(){
         GetComponent<PlayerMovement>().enabled = false;
+        audioSource.PlayOneShot(success);
         Invoke("LoadNextLevel",1f);
     }
 

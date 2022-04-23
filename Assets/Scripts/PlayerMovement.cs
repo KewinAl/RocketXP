@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Rigidbody rb;
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float turnSpeed = 5f;
+    [SerializeField] AudioClip mainEngine;
 
     [SerializeField] PlayerInputActions playerControls;
     Vector2 moveDirection = Vector2.zero;
@@ -32,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     void ProcessSound(){
         if(move.IsPressed()){
             if(!audioSource.isPlaying){
-                audioSource.Play();
+                audioSource.PlayOneShot(mainEngine);
             }
         }else{
             audioSource.Stop();
@@ -45,7 +46,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Moving()
     {
-
         rb.freezeRotation = true;
         rb.AddRelativeForce(0, moveDirection.y * moveSpeed, 0);
         //rb.AddRelativeTorque(0,0,-moveDirection.x * turnSpeed);
